@@ -1,29 +1,27 @@
-from file_reader import FileReader
-from geometry_parser.geometry_parser import GeometryParser
-from presenter import Presenter
-from solver import Solver
+from model.file_reader import FileReader
+from model.geometry_parser.geometry_parser import GeometryParser
+from model.presenter import Presenter
+from model.solver import Solver
+from view.main_window import MainWindow
+from kivy.app import App
 
-geometry_present = FileReader.read("examples/exp3/geometry.txt")
-geometry_graph = GeometryParser().parse(geometry_present)
 
-words = FileReader.read("examples/exp3/words.txt")
+class Crossword(App):
+    def build(self):
+        geometry_present = FileReader.read("examples/exp0/geometry.txt")
+        geometry_graph = GeometryParser().parse(geometry_present)
 
-solution = Solver().solve(geometry_graph, words)
+        words = FileReader.read("examples/exp0/words.txt")
 
-for node, word in solution.items():
-    print(node, word, sep="")
+        solution = Solver().solve(geometry_graph, words)
 
-print("""
-###################
-###############################################
-##############################################
-###########################
-""")
+        height = len(geometry_present)
+        width = len(geometry_present[0])
 
-height = len(geometry_present)
-width = len(geometry_present[0])
+        present = Presenter().get_present(width, height, solution)
 
-present = Presenter().get_present(width, height, solution)
+        return MainWindow(present)
 
-for i in present:
-    print(i)
+
+if __name__ == '__main__':
+    Crossword().run()

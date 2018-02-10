@@ -1,8 +1,7 @@
 from collections import defaultdict, namedtuple
 
-from enums import WordType
-from geometry_graph import GeometryGraph
-from geometry_node import GeometryNode
+from model.geometry_graph import GeometryGraph
+from model.geometry_node import GeometryNode
 
 Point = namedtuple("Position", ['x', 'y'])
 IncidentNodeInfo = namedtuple("IncidentNodeInfo",

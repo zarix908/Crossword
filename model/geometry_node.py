@@ -1,5 +1,6 @@
-from geometry_parser.double_dict import DoubleDictionary
-from lexicon.mask import Mask
+from model.lexicon.mask import Mask
+
+from model.geometry_parser.double_dict import DoubleDictionary
 
 
 class GeometryNode:

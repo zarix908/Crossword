@@ -1,7 +1,8 @@
 import unittest
 
 from lexicon.mask import Mask
-from lexicon.lexicon import Lexicon
+
+from model.lexicon.lexicon import Lexicon
 
 
 class WordsFilterTest(unittest.TestCase):

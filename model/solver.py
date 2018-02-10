@@ -1,4 +1,4 @@
-from lexicon.lexicon import Lexicon
+from model.lexicon.lexicon import Lexicon
 
 
 class Solver:
