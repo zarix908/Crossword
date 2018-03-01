@@ -1,27 +1,16 @@
-from model.file_reader import FileReader
-from model.geometry_parser.geometry_parser import GeometryParser
-from model.presenter import Presenter
-from model.solver import Solver
-from view.main_window import MainWindow
-from kivy.app import App
+import argparse
 
-
-class Crossword(App):
-    def build(self):
-        geometry_present = FileReader.read("examples/exp0/geometry.txt")
-        geometry_graph = GeometryParser().parse(geometry_present)
-
-        words = FileReader.read("examples/exp0/words.txt")
-
-        solution = Solver().solve(geometry_graph, words)
-
-        height = len(geometry_present)
-        width = len(geometry_present[0])
-
-        present = Presenter().get_present(width, height, solution)
-
-        return MainWindow(present)
-
+geometry_file_name, words_file_name = "", ""
 
 if __name__ == '__main__':
-    Crossword().run()
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('geometry', type=str, nargs='?',
+                        help="- geometry file name")
+
+    parser.add_argument('words', nargs='?', type=str,
+                        help='- words file name')
+
+    args = parser.parse_args()
+
+    from application import CrosswordApp
+    CrosswordApp(args.geometry, args.words).run()

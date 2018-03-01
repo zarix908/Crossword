@@ -1,51 +1,68 @@
 from kivy.core.window import Window
-from kivy.graphics.context_instructions import Color
-from kivy.graphics.vertex_instructions import Rectangle, Line
-from kivy.core.text import Label as CoreLabel
+from kivy.properties import ObjectProperty
+from kivy.uix.label import Label
+from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
+
+from model.file_reader import FileReader
+from model.geometry_parser.geometry_parser import GeometryParser
+from model.presenter import Presenter
+from model.solver import Solver
+from view.geometry_widget import GeometryWidget
+from view.load_dialog import LoadDialog
+from view.solution_widget import SolutionWidget
 
 
 class MainWindow(Widget):
-    def __init__(self, present, **kwargs):
+    body_widget = ObjectProperty(None)
+
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.__present = present
-        height = len(self.__present)
-        width = len(self.__present[0])
-        Window.size = (width * 30 + 2, height * 30 + 2)
-        self.size = Window.size
-        self.show_solution()
+        self.__popup = None
+        self.__geometry_graph = None
+        self.__geometry_present = None
+        self.__words = None
+        self.load = None
 
-    def show_solution(self):
-        with self.canvas:
-            Color(0, 0, 0, 1)
-            Rectangle(pos=(0, 0), size=self.size)
-            height = len(self.__present)
-            width = len(self.__present[0])
+    def show_load(self, loading_component):
+        if loading_component == "geometry":
+            self.load = self.load_geometry
+        else:
+            self.load = self.load_words
 
-            for x in range(width):
-                for y in range(height):
-                    symbol = self.__present[y][x]
+        content = LoadDialog(load=self.load, cancel=self.dismiss_popup)
+        self.__popup = Popup(title="Load file", content=content,
+                             size_hint=(0.9, 0.9))
+        self.__popup.open()
 
-                    if symbol != '#':
-                        Color(0, 1, 0, 1)
-                        label = CoreLabel(text=symbol, font_size=20)
-                        label.refresh()
-                        Rectangle(
-                            pos=(x * 30 + 5, self.size[1] - (y + 1) * 30 + 5),
-                            texture=label.texture,
-                            size=label.texture.size)
-                        self.draw_empty_rectangle(x,
-                                                  self.size[1] - (y + 1) * 30)
+    def load_geometry(self, file_names):
+        self.__geometry_present = FileReader.read(file_names[0])
+        self.__geometry_graph = GeometryParser().parse(self.__geometry_present)
 
-    def draw_empty_rectangle(self, x, y):
-        with self.canvas:
-            x *= 30
+        geometry_widget = GeometryWidget()
+        geometry_widget.show_geometry(self.__geometry_present)
+        self.body_widget.add_widget(geometry_widget)
+        self.dismiss_popup()
 
-            points = [x, y,
-                      x + 30, y,
-                      x + 30,
-                      y + 30,
-                      x, y + 30,
-                      x, y]
+    def load_words(self, file_names):
+        self.__words = FileReader.read(file_names[0])
+        label = Label(text="\n".join(self.__words))
+        self.body_widget.add_widget(label)
+        self.dismiss_popup()
 
-            Line(points=points, width=2)
+    def solve(self):
+        solution = Solver().solve(self.__geometry_graph, self.__words)
+
+        height = len(self.__geometry_present)
+        width = len(self.__geometry_present[0])
+
+        present = Presenter().get_present(width, height, solution)
+
+        self.body_widget.clear_widgets()
+        solution_widget = SolutionWidget()
+        solution_widget.show_solution(present)
+        self.body_widget.add_widget(solution_widget)
+
+    def dismiss_popup(self):
+        if self.__popup is not None:
+            self.__popup.dismiss()

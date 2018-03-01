@@ -1,0 +1,55 @@
+<MainWindow>:
+    body_widget: body
+
+    BoxLayout:
+        orientation: "vertical"
+        size: root.size
+
+        canvas:
+            Color:
+                rgb: 0.34, 0.34, 0.34
+
+            Rectangle:
+                pos: 0, self.height - (self.height * (30 / root.height))
+                size: self.width, self.height * (30 / root.height)
+
+
+        BoxLayout:
+            size_hint_y: 30 / root.height
+            size_hint_x: 400 / root.width
+            padding: 0
+            spacing: 0
+
+            Button:
+                text: "Load geometry"
+                on_press: root.show_load("geometry")
+            Button:
+                text: "Load words"
+                on_press: root.show_load("words")
+
+            Button:
+                text: "Solve"
+                on_press: root.solve()
+
+        BoxLayout:
+            size_hint_y: 1 - (30 / root.height)
+            id: body
+
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.selection)
