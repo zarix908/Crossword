@@ -1,37 +1,28 @@
+from kivy.core.window import Window
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle, Line
+from kivy.properties import ObjectProperty
+from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.widget import Widget
 
 
 class GeometryWidget(Widget):
+    grid_layout = ObjectProperty(None)
+
     def __init__(self):
         super().__init__()
+        self.size = Window.size
 
     def show_geometry(self, geometry):
-        with self.canvas:
-            Color(0, 0, 0, 1)
-            Rectangle(pos=(0, 0), size=self.size)
-            height = len(geometry)
-            width = len(geometry[0])
+        height = len(geometry)
+        width = len(geometry[0])
 
-            for x in range(width):
-                for y in range(height):
-                    symbol = geometry[y][x]
+        self.grid_layout.cols = height
+        self.grid_layout.rows = width
 
-                    if symbol != '#':
-                        Color(1, 1, 1, 1)
-                        self.draw_empty_rectangle(x, y)
+        for x in range(width):
+            for y in range(height):
+                symbol = geometry[y][x]
 
-    def draw_empty_rectangle(self, x, y):
-        with self.canvas:
-            x *= 30
-            y *= 30
-
-            points = [x, y,
-                      x + 30, y,
-                      x + 30,
-                      y + 30,
-                      x, y + 30,
-                      x, y]
-
-            Line(points=points, width=1)
+                self.grid_layout.add_widget(
+                    ToggleButton() if symbol != "#" else Widget())

@@ -4,12 +4,12 @@ from model.geometry_parser.double_dict import DoubleDictionary
 
 
 class GeometryNode:
-    def __init__(self, orientation, matrix_position):
+    def __init__(self, is_vertical, matrix_position):
         self.words_candidates = []
         self.capacity = None
         self.id = None
         self.__incidents_nodes = DoubleDictionary()
-        self.__is_vertical_orientation = orientation
+        self.__is_vertical_orientation = is_vertical
         self.__matrix_position = matrix_position
 
     @property

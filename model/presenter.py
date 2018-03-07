@@ -4,6 +4,9 @@ class Presenter:
         self.__solution = None
 
     def get_present(self, width, height, solution):
+        if solution is None:
+            return None
+
         present = [['#' for x in range(width)] for y in range(height)]
         self.__solution = solution
 

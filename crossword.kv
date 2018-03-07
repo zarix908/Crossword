@@ -53,3 +53,16 @@
             Button:
                 text: "Load"
                 on_release: root.load(filechooser.selection)
+
+<GeometryWidget>:
+    grid_layout: layout
+
+    GridLayout:
+        size: root.size
+        id: layout
+
+<SolutionWidget>:
+    grid_layout: layout
+
+    GridLayout:
+        id: layout

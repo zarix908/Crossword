@@ -42,6 +42,10 @@ class GeometryParser:
         length = 0
         current_node = GeometryNode(is_vertical, Point(0, 0))
         width = len(geometry_present)
+
+        if width < 1:
+            print("Incorrect geometry format. ")
+
         height = len(geometry_present[0])
 
         first_iterable = range(width)

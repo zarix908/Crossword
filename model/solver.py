@@ -8,8 +8,8 @@ class Solver:
         self.__current_node = None
         self.__from_previous = None
 
-    def solve(self, geometry_graph, words):
-        self.refresh(geometry_graph, words)
+    def solve(self, geometry_graph, words, reversed_mode):
+        self.refresh(geometry_graph, words, reversed_mode)
         way = []
 
         while True:
@@ -44,9 +44,9 @@ class Solver:
 
         return solution
 
-    def refresh(self, geometry_graph, words):
+    def refresh(self, geometry_graph, words, reversed_mode):
         self.__geometry_graph = geometry_graph
-        self.__lexicon = Lexicon(words)
+        self.__lexicon = Lexicon(words, reversed_enabled=reversed_mode)
         self.__current_node = self.__geometry_graph.next_node()
         self.__from_previous = True
 

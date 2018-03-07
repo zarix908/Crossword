@@ -16,3 +16,6 @@ class DoubleDictionary:
 
     def items(self):
         return self.__dict2.items()
+
+    def __len__(self):
+        return len(self.__dict1)

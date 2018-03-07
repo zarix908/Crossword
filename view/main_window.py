@@ -16,16 +16,18 @@ from view.solution_widget import SolutionWidget
 class MainWindow(Widget):
     body_widget = ObjectProperty(None)
 
-    def __init__(self, **kwargs):
+    def __init__(self, reversed_mode, **kwargs):
         super().__init__(**kwargs)
+        self.__reversed_mode = reversed_mode
         self.__popup = None
         self.__geometry_graph = None
         self.__geometry_present = None
         self.__words = None
+        self.__body_contain_widgets = []
         self.load = None
 
     def show_load(self, loading_component):
-        if loading_component == "geometry":
+        if loading_component == "geometry.txt":
             self.load = self.load_geometry
         else:
             self.load = self.load_words
@@ -36,30 +38,37 @@ class MainWindow(Widget):
         self.__popup.open()
 
     def load_geometry(self, file_names):
-        self.__geometry_present = FileReader.read(file_names[0])
+        self.__geometry_present = FileReader().read(file_names[0])
         self.__geometry_graph = GeometryParser().parse(self.__geometry_present)
 
         geometry_widget = GeometryWidget()
+        self.__body_contain_widgets.append(geometry_widget)
         geometry_widget.show_geometry(self.__geometry_present)
         self.body_widget.add_widget(geometry_widget)
         self.dismiss_popup()
 
     def load_words(self, file_names):
-        self.__words = FileReader.read(file_names[0])
+        self.__words = FileReader().read(file_names[0])
         label = Label(text="\n".join(self.__words))
+        self.__body_contain_widgets.append(label)
         self.body_widget.add_widget(label)
         self.dismiss_popup()
 
     def solve(self):
-        solution = Solver().solve(self.__geometry_graph, self.__words)
+        solution = Solver().solve(self.__geometry_graph, self.__words,
+                                  self.__reversed_mode)
 
         height = len(self.__geometry_present)
         width = len(self.__geometry_present[0])
 
         present = Presenter().get_present(width, height, solution)
 
-        self.body_widget.clear_widgets()
-        solution_widget = SolutionWidget()
+        for widget in self.__body_contain_widgets:
+            self.body_widget.remove_widget(widget)
+
+        self.body_widget.size_hint_x = 1 - (30 / self.height)
+
+        solution_widget = SolutionWidget(size=self.body_widget.size)
         solution_widget.show_solution(present)
         self.body_widget.add_widget(solution_widget)
 
