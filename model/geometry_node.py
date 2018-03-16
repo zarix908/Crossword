@@ -20,6 +20,10 @@ class GeometryNode:
     def matrix_position(self):
         return self.__matrix_position
 
+    @property
+    def incident_nodes(self):
+        yield from self.__incidents_nodes
+
     def add_incident(self, node, index):
         self.__incidents_nodes.add(node, index)
 
@@ -38,9 +42,19 @@ class GeometryNode:
         return self.words_candidates[-1][adj_letter_index] if len(
             self.words_candidates) > 0 else None
 
-    @property
-    def incident_nodes(self):
-        yield from self.__incidents_nodes
+    def generate_candidates(self, lexicon):
+        mask = self.generate_mask()
+        self.words_candidates = lexicon.get_word_by(mask, self)
+
+        if len(self.words_candidates) > 0:
+            lexicon.use_word(self.words_candidates[-1])
+
+    def pop_candidate(self, lexicon):
+        word = self.words_candidates.pop()
+        lexicon.free_word(word)
+
+        if len(self.words_candidates) > 0:
+            lexicon.use_word(self.words_candidates[-1])
 
     def __str__(self):
         return "\n--------------------------\n" + str(self.id) + "\n" + str(

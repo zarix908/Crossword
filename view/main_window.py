@@ -19,6 +19,8 @@ class MainWindow(Widget):
     def __init__(self, reversed_mode, **kwargs):
         super().__init__(**kwargs)
         self.__reversed_mode = reversed_mode
+        self.__solver = Solver()
+
         self.__popup = None
         self.__geometry_graph = None
         self.__geometry_present = None
@@ -47,6 +49,8 @@ class MainWindow(Widget):
         self.body_widget.add_widget(geometry_widget)
         self.dismiss_popup()
 
+        self.__solver = Solver()
+
     def load_words(self, file_names):
         self.__words = FileReader().read(file_names[0])
         label = Label(text="\n".join(self.__words))
@@ -54,9 +58,11 @@ class MainWindow(Widget):
         self.body_widget.add_widget(label)
         self.dismiss_popup()
 
+        self.__solver = Solver()
+
     def solve(self):
-        solution = Solver().solve(self.__geometry_graph, self.__words,
-                                  self.__reversed_mode)
+        solution = self.__solver.get_next_solution(self.__geometry_graph, self.__words,
+                                              self.__reversed_mode)
 
         height = len(self.__geometry_present)
         width = len(self.__geometry_present[0])

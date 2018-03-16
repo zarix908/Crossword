@@ -1,5 +1,7 @@
 from queue import Queue
 
+from copy import copy
+
 
 class GeometryGraph:
     def __init__(self, nodes):
@@ -33,3 +35,9 @@ class GeometryGraph:
         self.__current_node_index -= 1
         return self.__visited_nodes[self.__current_node_index] if abs(
             self.__current_node_index) <= len(self.__visited_nodes) else None
+
+    def __copy__(self):
+        for node in self.__nodes:
+            node.words_candidates = []
+
+        return GeometryGraph(self.__nodes)

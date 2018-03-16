@@ -1,4 +1,7 @@
+from copy import copy
+
 from model.lexicon.lexicon import Lexicon
+from model.solutions_saver import SolutionsSaver
 
 
 class Solver:
@@ -7,6 +10,23 @@ class Solver:
         self.__lexicon = None
         self.__current_node = None
         self.__from_previous = None
+        self.__solutions_saver = SolutionsSaver()
+        self.__solution_index = -1
+
+    def get_next_solution(self, geometry_graph, words, reversed_mode):
+        if self.__solution_index == -1:
+            while not self.__solutions_saver.all_solutions_found:
+                solution = self.solve(copy(geometry_graph), list(words),
+                                      reversed_mode)
+                self.__solutions_saver.save(solution)
+
+        solutions = self.__solutions_saver.get_all()
+
+        self.__solution_index += 1
+        if self.__solution_index >= len(solutions):
+            self.__solution_index = 0
+
+        return solutions[self.__solution_index]
 
     def solve(self, geometry_graph, words, reversed_mode):
         self.refresh(geometry_graph, words, reversed_mode)
@@ -14,12 +34,10 @@ class Solver:
 
         while True:
             if self.__from_previous:
-                mask = self.__current_node.generate_mask()
-                candidates = self.__lexicon.get_word_by(mask)
-                self.__current_node.words_candidates = candidates
+                self.__current_node.generate_candidates(self.__lexicon)
 
             else:
-                self.__current_node.words_candidates.pop()
+                self.__current_node.pop_candidate(self.__lexicon)
 
             if len(self.__current_node.words_candidates) == 0:
                 self.__from_previous = False
@@ -46,8 +64,7 @@ class Solver:
 
     def refresh(self, geometry_graph, words, reversed_mode):
         self.__geometry_graph = geometry_graph
-        self.__lexicon = Lexicon(words, reversed_enabled=reversed_mode)
+        self.__lexicon = Lexicon(words, self.__solutions_saver,
+                                 reversed_enabled=reversed_mode)
         self.__current_node = self.__geometry_graph.next_node()
         self.__from_previous = True
-
-
