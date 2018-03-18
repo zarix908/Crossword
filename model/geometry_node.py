@@ -22,7 +22,7 @@ class GeometryNode:
 
     @property
     def incident_nodes(self):
-        yield from self.__incidents_nodes
+        return self.__incidents_nodes
 
     def add_incident(self, node, index):
         self.__incidents_nodes.add(node, index)

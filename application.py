@@ -1,3 +1,7 @@
+from kivy.config import Config
+
+Config.set('graphics', 'resizable', False)
+
 from kivy.app import App
 from view.main_window import MainWindow
 

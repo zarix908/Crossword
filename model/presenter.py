@@ -1,9 +1,12 @@
+from utills import is_int
+
+
 class Presenter:
     def __init__(self):
         self.__present = None
         self.__solution = None
 
-    def get_present(self, width, height, solution):
+    def get_present(self, width, height, solution, filled_grid):
         if solution is None:
             return None
 
@@ -11,21 +14,23 @@ class Presenter:
         self.__solution = solution
 
         for node, word in self.__solution.items():
-            self.print(present, word, node.matrix_position,
-                       node.is_vertical_orientation)
+            self.print(present, node, word, filled_grid)
 
         return present
 
-    def print(self, present, word, matrix_position, is_vertical):
-        x = matrix_position.x
-        y = matrix_position.y
+    def print(self, present, node, word, filled_grid):
+        x = node.matrix_position.x
+        y = node.matrix_position.y
 
         for letter in word:
-            present[y][x] = letter
+            if not is_int(present[y][x]):
+                present[y][x] = "&&" if filled_grid else letter
 
-            if is_vertical:
+            if node.is_vertical_orientation:
                 y += 1
             else:
                 x += 1
 
-
+        if filled_grid:
+            present[node.matrix_position.y][node.matrix_position.x] = str(
+                node.id)

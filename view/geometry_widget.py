@@ -17,11 +17,11 @@ class GeometryWidget(Widget):
         height = len(geometry)
         width = len(geometry[0])
 
-        self.grid_layout.cols = height
-        self.grid_layout.rows = width
+        self.grid_layout.cols = width
+        self.grid_layout.rows = height
 
-        for x in range(width):
-            for y in range(height):
+        for y in range(height):
+            for x in range(width):
                 symbol = geometry[y][x]
 
                 self.grid_layout.add_widget(

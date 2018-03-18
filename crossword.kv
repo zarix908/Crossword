@@ -1,5 +1,6 @@
 <MainWindow>:
     body_widget: body
+    toggle_button: toggle
 
     BoxLayout:
         orientation: "vertical"
@@ -16,7 +17,7 @@
 
         BoxLayout:
             size_hint_y: 30 / root.height
-            size_hint_x: 400 / root.width
+            size_hint_x: 500 / root.width
             padding: 0
             spacing: 0
 
@@ -31,9 +32,14 @@
                 text: "Solve"
                 on_press: root.solve()
 
+            ToggleButton:
+                id: toggle
+                text: "Filled grid"
+
         BoxLayout:
-            size_hint_y: 1 - (30 / root.height)
             id: body
+            size: root.size
+            orientation: "horizontal"
 
 <LoadDialog>:
     BoxLayout:

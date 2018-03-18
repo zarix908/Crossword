@@ -34,17 +34,18 @@ class SolutionWidget(Widget):
 
                     if symbol != '#':
                         Color(0, 1, 0, 1)
-                        label = CoreLabel(text=symbol, font_size=20)
+                        text = "" if symbol == "&&" else symbol
+                        label = CoreLabel(text=text, font_size=20)
                         label.refresh()
-                        Rectangle(
-                            pos=(x * self.CELL_SIZE + self.OFFSET,
-                                 self.size[1] - (
-                                 y + 1) * self.CELL_SIZE + self.OFFSET),
-                            texture=label.texture,
-                            size=label.texture.size)
-                        self.draw_empty_rectangle(x,
-                                                  self.size[1] - (
-                                                      y + 1) * self.CELL_SIZE)
+
+                        coord_x = x * self.CELL_SIZE + self.OFFSET
+                        top_offset = (y + 1) * self.CELL_SIZE
+                        coord_y = self.height - top_offset + self.OFFSET
+
+                        Rectangle(pos=(coord_x, coord_y),
+                                  texture=label.texture,
+                                  size=label.texture.size)
+                        self.draw_empty_rectangle(x, self.height - top_offset)
 
     def draw_empty_rectangle(self, x, y):
         with self.canvas:

@@ -19,3 +19,6 @@ class DoubleDictionary:
 
     def __len__(self):
         return len(self.__dict1)
+
+    def __contains__(self, item):
+        return item in self.__dict2

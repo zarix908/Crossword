@@ -24,8 +24,7 @@ def console_mode_solve():
     geometry = GeometryParser().parse(geometry_present)
     words = file_reader.read(args.words)
     solution = Solver().solve(geometry, words, args.reversed)
-    present = Presenter().get_present(width, height, solution)
-    
+    present = Presenter().get_present(width, height, solution, False)
 
 
 if __name__ == '__main__':
