@@ -24,7 +24,10 @@ def console_mode_solve():
     geometry = GeometryParser().parse(geometry_present)
     words = file_reader.read(args.words)
     solution = Solver().solve(geometry, words, args.reversed)
-    present = Presenter().get_present(width, height, solution, False)
+    present = Presenter().get_present(width, height, solution,
+                                      filled_grid=False)
+    for line in present:
+        print("".join(line))
 
 
 if __name__ == '__main__':
@@ -71,6 +74,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.graphic:
+        sys.argv.remove("--graphic")
         from application import CrosswordApp
 
         CrosswordApp(args.geometry, args.words,

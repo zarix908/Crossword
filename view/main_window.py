@@ -1,6 +1,5 @@
 from itertools import chain
 
-from kivy.core.window import Window
 from kivy.properties import ObjectProperty
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
