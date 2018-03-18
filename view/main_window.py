@@ -6,6 +6,7 @@ from kivy.uix.widget import Widget
 from model.file_reader import FileReader
 from model.geometry_parser.geometry_parser import GeometryParser
 from model.presenter import Presenter
+from model.same_letters_checker import SameLettersChecker
 from model.solver import Solver
 from utills import generate_unfilled_grid_answers
 from view.geometry_widget import GeometryWidget
@@ -19,13 +20,17 @@ class MainWindow(Widget):
 
     def __init__(self, reversed_mode, **kwargs):
         super().__init__(**kwargs)
-        self.__reversed_mode = reversed_mode
-        self.__solver = Solver()
-
         self.__popup = None
+        self.__geometry_widget = None
+
         self.__geometry_graph = None
         self.__geometry_present = None
         self.__words = None
+        self.__reversed_mode = reversed_mode
+
+        self.__solver = Solver()
+        self.__same_letters_checker = SameLettersChecker()
+
         self.load = None
 
     def show_load(self, loading_component):
@@ -45,9 +50,9 @@ class MainWindow(Widget):
         self.__geometry_present = FileReader().read(file_names[0])
         self.__geometry_graph = GeometryParser().parse(self.__geometry_present)
 
-        geometry_widget = GeometryWidget()
-        geometry_widget.show_geometry(self.__geometry_present)
-        self.body_widget.add_widget(geometry_widget)
+        self.__geometry_widget = GeometryWidget()
+        self.__geometry_widget.show_geometry(self.__geometry_present)
+        self.body_widget.add_widget(self.__geometry_widget)
 
         self.dismiss_popup()
 
@@ -69,6 +74,7 @@ class MainWindow(Widget):
         solution = self.__solver.get_next_solution(self.__geometry_graph,
                                                    self.__words,
                                                    self.__reversed_mode)
+
         height = len(self.__geometry_present)
         width = len(self.__geometry_present[0])
         filled_grid = self.toggle_button.state == "down"

@@ -26,3 +26,6 @@ class GeometryWidget(Widget):
 
                 self.grid_layout.add_widget(
                     ToggleButton() if symbol != "#" else Widget())
+
+    def get_same_letters_positions(self):
+        pass
