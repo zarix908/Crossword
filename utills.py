@@ -1,3 +1,6 @@
+from itertools import chain
+
+
 def is_int(value):
     try:
         int(value)
@@ -19,3 +22,18 @@ def calc_answer_id(node):
                 answer_id = incident_node.id
 
     return answer_id
+
+
+def generate_unfilled_grid_answers(solution):
+    horizontal_answers = []
+    vertical_answers = []
+
+    for node, word in solution.items():
+        answer_id = calc_answer_id(node)
+        vertical = node.is_vertical_orientation
+        answers = vertical_answers if vertical else horizontal_answers
+        answers.append("  " + str(answer_id) + ")" + word + "\n")
+
+    vertical_answers.insert(0, "Vertically:\n")
+    horizontal_answers.insert(0, "\nHorizontally:\n")
+    return "".join(chain(vertical_answers, horizontal_answers))

@@ -6,6 +6,7 @@ from model.geometry_node import GeometryNode
 from model.geometry_parser.geometry_parser import GeometryParser, Point
 from model.lexicon.lexicon import Lexicon
 from model.lexicon.mask import Mask
+from model.solutions_saver import SolutionsSaver
 from model.solver import Solver
 
 
@@ -42,7 +43,7 @@ class ModelTest(unittest.TestCase):
 
     def test_solver(self):
         geometry = GeometryParser().parse(self.__geometry_present)
-        solution = Solver().solve(geometry, self.__words)
+        solution = Solver().solve(geometry, self.__words, reversed_mode=False)
         check_solution = {}
 
         for node, word in solution.items():
@@ -57,20 +58,22 @@ class ModelTest(unittest.TestCase):
 
     def test_lexicon(self):
         words = ["apple", "banana", "pineapple", "cherry", "orange"]
-        test_filter = Lexicon(words, True)
+        solution_saver = SolutionsSaver()
+        node = None
+        test_filter = Lexicon(words, solution_saver, reversed_enabled=True)
 
         mask = Mask(6, {})
-        answer = sorted(list(test_filter.get_word_by(mask)))
+        answer = sorted(list(test_filter.get_word_by(mask, node)))
         self.assertListEqual(answer,
                              ["ananab", "banana", "cherry", "egnaro", "orange",
                               "yrrehc"])
 
         mask = Mask(6, {2: 'n'})
-        answer = sorted(list(test_filter.get_word_by(mask)))
+        answer = sorted(list(test_filter.get_word_by(mask, node)))
         self.assertListEqual(answer, ["banana", "egnaro"])
 
         mask = Mask(6, {5: 'e'})
-        answer = sorted(list(test_filter.get_word_by(mask)))
+        answer = sorted(list(test_filter.get_word_by(mask, node)))
         self.assertListEqual(answer, ["orange"])
 
     def create_expected_geometry(self):
