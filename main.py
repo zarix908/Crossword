@@ -75,6 +75,9 @@ if __name__ == '__main__':
 
     if args.graphic:
         sys.argv.remove("--graphic")
+        if args.reversed:
+            sys.argv.remove("--reversed")
+
         from application import CrosswordApp
 
         CrosswordApp(args.geometry, args.words,
