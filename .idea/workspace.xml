@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fb8cebe4-ce1d-49a0-b9cc-c067ca75a72e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application.py" afterPath="$PROJECT_DIR$/application.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/crossword.kv" afterPath="$PROJECT_DIR$/crossword.kv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/geometry_node.py" afterPath="$PROJECT_DIR$/model/geometry_node.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/geometry_parser/double_dict.py" afterPath="$PROJECT_DIR$/model/geometry_parser/double_dict.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/presenter.py" afterPath="$PROJECT_DIR$/model/presenter.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/solutions_saver.py" afterPath="$PROJECT_DIR$/model/solutions_saver.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/view/geometry_widget.py" afterPath="$PROJECT_DIR$/view/geometry_widget.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/view/main_window.py" afterPath="$PROJECT_DIR$/view/main_window.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/view/solution_widget.py" afterPath="$PROJECT_DIR$/view/solution_widget.py" />
-    </list>
+    <list default="true" id="fb8cebe4-ce1d-49a0-b9cc-c067ca75a72e" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
