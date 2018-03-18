@@ -84,8 +84,11 @@ class MainWindow(Widget):
             for node, word in solution.items():
                 id = node.id
                 is_vertical = node.is_vertical_orientation
-                if is_vertical and (0 in node.incident_nodes):
-                    id = node.incident_nodes[0].id
+                if is_vertical and 0 in node.incident_nodes:
+                    incient_node = node.incident_nodes[0]
+                    if 0 in incient_node.incident_nodes:
+                        if incient_node.incident_nodes[0] == node:
+                            id = incient_node.id
 
                 answers += str(id) + " " + word + "\n"
 
