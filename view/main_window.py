@@ -1,3 +1,5 @@
+from itertools import chain
+
 from kivy.core.window import Window
 from kivy.properties import ObjectProperty
 from kivy.uix.label import Label
@@ -8,6 +10,7 @@ from model.file_reader import FileReader
 from model.geometry_parser.geometry_parser import GeometryParser
 from model.presenter import Presenter
 from model.solver import Solver
+from utills import calc_answer_id
 from view.geometry_widget import GeometryWidget
 from view.load_dialog import LoadDialog
 from view.solution_widget import SolutionWidget
@@ -29,7 +32,7 @@ class MainWindow(Widget):
         self.load = None
 
     def show_load(self, loading_component):
-        if loading_component == "geometry.txt":
+        if loading_component == "geometry":
             self.load = self.load_geometry
         else:
             self.load = self.load_words
@@ -40,6 +43,7 @@ class MainWindow(Widget):
         self.__popup.open()
 
     def load_geometry(self, file_names):
+        self.body_widget.clear_widgets()
         self.__geometry_present = FileReader().read(file_names[0])
         self.__geometry_graph = GeometryParser().parse(self.__geometry_present)
 
@@ -80,19 +84,20 @@ class MainWindow(Widget):
         self.body_widget.add_widget(solution_widget)
 
         if filled_grid:
-            answers = ""
+            horizontal_answers = []
+            vertical_answers = []
+
             for node, word in solution.items():
-                id = node.id
-                is_vertical = node.is_vertical_orientation
-                if is_vertical and 0 in node.incident_nodes:
-                    incient_node = node.incident_nodes[0]
-                    if 0 in incient_node.incident_nodes:
-                        if incient_node.incident_nodes[0] == node:
-                            id = incient_node.id
+                answer_id = calc_answer_id(node)
+                vertical = node.is_vertical_orientation
+                answers = vertical_answers if vertical else horizontal_answers
+                answers.append("  " + str(answer_id) + ")" + word + "\n")
 
-                answers += str(id) + " " + word + "\n"
+            vertical_answers.insert(0, "Vertically:\n")
+            horizontal_answers.insert(0, "\nHorizontally:\n")
+            answers = "".join(chain(vertical_answers, horizontal_answers))
 
-            label = Label(text=answers)
+            label = Label(text=answers, color=(0, 1, 0, 1))
             self.body_widget.add_widget(label)
 
     def dismiss_popup(self):

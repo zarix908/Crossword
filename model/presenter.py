@@ -1,4 +1,4 @@
-from utills import is_int
+from utills import is_int, calc_answer_id
 
 
 class Presenter:
@@ -32,5 +32,6 @@ class Presenter:
                 x += 1
 
         if filled_grid:
+            answer_id = calc_answer_id(node)
             present[node.matrix_position.y][node.matrix_position.x] = str(
-                node.id)
+                answer_id)
