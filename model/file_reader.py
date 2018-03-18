@@ -10,6 +10,9 @@ class FileReader:
             self.error(file_name, is_exist_error=True)
         except FileNotFoundError:
             self.error(file_name, is_exist_error=False)
+        except UnicodeDecodeError:
+            print("File content should be utf-8 encoded.", file=sys.stderr)
+            exit(1)
 
     def error(self, file_name, is_exist_error):
         print(

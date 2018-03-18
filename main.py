@@ -73,10 +73,11 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    if args.reversed:
+        sys.argv.remove("--reversed")
+
     if args.graphic:
         sys.argv.remove("--graphic")
-        if args.reversed:
-            sys.argv.remove("--reversed")
 
         from application import CrosswordApp
 
